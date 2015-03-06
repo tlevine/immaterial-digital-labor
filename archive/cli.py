@@ -25,9 +25,9 @@ def parse_args():
         _args.access_token = input(ACCESS_TOKEN_MESSAGE)
     return _args
 
-def main():
+def cli():
     import csv, sys
     args()
-    w = csv.DictWriter(sys.stdout, FIELDNAMES):
+    w = csv.DictWriter(sys.stdout, FIELDNAMES)
     for post in download(access_token):
         w.writerows(condense(post))
