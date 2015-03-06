@@ -1,16 +1,22 @@
-import os, datetime
+import os, datetime, re
 from urllib.parse import urlencode
 
 import vlermv, requests
 
+__all__ = ['download']
+
 GROUP_ID = 1463661227181475
-URL = 'https://graph.facebook.com/v2.2/%s/feed % GROUP_ID'
+URL = 'https://graph.facebook.com/v2.2/%s/feed' % GROUP_ID
 CACHE = os.path.join('~', '.immaterial-digital-labor', 'archive')
 
-def url(access_token):
+def _url(access_token):
     return '%s?access_token=%s' % (URL, access_token)
 
-get = vlermv.cache(os.path.join(CACHE, datetime.date.today().isoformat()))(requests.get)
+_dir = os.path.join(CACHE, datetime.date.today().isoformat())
+def _transformer(args):
+    url = args[0]
+    return re.match(r'.*(?:access_token|until)=([^&]+)(?:&.*|)$', url).group(1),
+get = vlermv.cache(_dir, transformer = _transformer)(requests.get)
 
 def download(access_token):
     '''
@@ -29,7 +35,7 @@ def download(access_token):
     * type
     '''
 
-    response = get(url(access_token))
+    response = get(_url(access_token))
     while response.ok:
         payload = response.json()
         yield from payload['data']
