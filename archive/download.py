@@ -8,13 +8,7 @@ URL = 'https://graph.facebook.com/v2.2/%s/feed % GROUP_ID'
 CACHE = os.path.join('~', '.immaterial-digital-labor', 'archive')
 
 def url(access_token):
-    return URL + '?' + urlencode({
-        'access_token': access_token,
-        'format': 'json',
-        'method': 'get',
-        'pretty': '0',
-        'suppress_http_code': '1',
-    })
+    return '%s?access_token=%s' % (URL, access_token)
 
 get = vlermv.cache(os.path.join(CACHE, datetime.date.today()))(requests.get)
 
