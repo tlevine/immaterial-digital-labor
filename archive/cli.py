@@ -14,20 +14,20 @@ FIELDNAMES = [
 ]
 
 def parse_args():
-    argparser = argparse.ArgumentParser(
+    p = argparse.ArgumentParser(
         description = 'Download links from the Immaterial Digital Labor group, '\
                       'and present them in some presentable way.',
     )
-    argparser.add_argument('--access_token')
+    p.add_argument('--access_token')
 
-    _args = argparse.parse_args()
-    if None == _args.access_taken:
+    _args = p.parse_args()
+    if None == _args.access_token:
         _args.access_token = input(ACCESS_TOKEN_MESSAGE)
     return _args
 
 def cli():
     import csv, sys
-    args()
+    args = parse_args()
     w = csv.DictWriter(sys.stdout, FIELDNAMES)
-    for post in download(access_token):
+    for post in download(args.access_token):
         w.writerows(condense(post))

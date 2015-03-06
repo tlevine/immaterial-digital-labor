@@ -2,7 +2,7 @@ def condense(post):
     fb_link = post['actions'][0]['link']
 
     x = {
-        'message': post['message'],
+        'message': post.get('message'),
         'facebook-link': fb_link,
         'external-link': post.get('link')
     }
@@ -11,7 +11,7 @@ def condense(post):
 
     for comment in post.get('comments', {}).get('data', []):
         x = {
-            'message': comment['message'],
+            'message': comment.get('message'),
             'facebook-link': fb_link,
             'external-link': None,
         }
