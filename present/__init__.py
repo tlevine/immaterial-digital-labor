@@ -1,11 +1,12 @@
 import re, csv, sys
+from urllib.parse import urlparse
 
 def main():
     sys.stdout.write('<table>\n')
     sys.stdout.write(HEAD)
     for datum in csv.DictReader(sys.stdin):
-        datum['external-links'] = find_links(datum['message'])
-        for tr in format_links(datum):
+        datum['external-links'] = find_links(datum)
+        for tr in format_body(datum):
             sys.stdout.write(tr)
     sys.stdout.write('</table>\n')
 
@@ -24,7 +25,7 @@ HEAD = '''
 '''
 BODY = '''
 <tr>
-  <td><a href="%(external-link)s">%(external-link)s</a></td>
+  <td><a href="%(external-link)s">%(external-link-domain)s</a></td>
   <td><a href="https://facebook.com/%(from-id)s">%(from-name)s</a></td>
   <td><a href="%(facebook-link)s">%(facebook-link-post-id)s</a></td>
 </tr>
@@ -32,7 +33,11 @@ BODY = '''
 
 def format_body(datum):
     args = dict(datum)
-    args['facebook-link-post-id'] = facebook-link.split('/')[-1]
-    for external_link in datum['external_links']:
+    args['facebook-link-post-id'] = datum['facebook-link'].split('/')[-1]
+    for external_link in datum['external-links']:
         args['external-link'] = external_link
-        yield BODY % datum
+        args['external-link-domain'] = urlparse(args['external-link']).netloc
+        yield (BODY % args).lstrip()
+
+if __name__ == '__main__':
+    main()

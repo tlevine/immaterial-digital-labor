@@ -7,8 +7,11 @@ setup(name='immaterial-digital-labor',
       url='http://thomaslevine.com',
       install_requires = ['vlermv', 'requests'],
       tests_require = ['nose'],
-      packages = ['archive'],
-      entry_points={'console_scripts': ['immaterial-digital-labor-archive = archive:cli']},
+      packages = ['archive', 'present'],
+      entry_points={'console_scripts': [
+          'immaterial-digital-labor-archive = archive:cli',
+          'immaterial-digital-labor-html = present:main',
+      ]},
       version='0.1',
       license='AGPL',
       classifiers=[

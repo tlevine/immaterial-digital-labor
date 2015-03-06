@@ -29,5 +29,6 @@ def cli():
     import csv, sys
     args = parse_args()
     w = csv.DictWriter(sys.stdout, FIELDNAMES)
+    w.writeheader()
     for post in download(args.access_token):
         w.writerows(condense(post))
