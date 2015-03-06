@@ -1,4 +1,4 @@
-import datetime
+import os, datetime
 from urllib.parse import urlencode
 
 import vlermv, requests
@@ -10,7 +10,7 @@ CACHE = os.path.join('~', '.immaterial-digital-labor', 'archive')
 def url(access_token):
     return '%s?access_token=%s' % (URL, access_token)
 
-get = vlermv.cache(os.path.join(CACHE, datetime.date.today()))(requests.get)
+get = vlermv.cache(os.path.join(CACHE, datetime.date.today().isoformat()))(requests.get)
 
 def download(access_token):
     '''
