@@ -1,4 +1,4 @@
-import os, datetime, re
+import os, re
 from urllib.parse import urlencode
 
 import vlermv, requests
@@ -12,11 +12,10 @@ CACHE = os.path.join('~', '.immaterial-digital-labor', 'archive')
 def _url(access_token):
     return '%s?access_token=%s' % (URL, access_token)
 
-_dir = os.path.join(CACHE, datetime.date.today().isoformat())
 def _transformer(args):
     url = args[0]
     return re.match(r'.*(?:access_token|until)=([^&]+)(?:&.*|)$', url).group(1),
-get = vlermv.cache(_dir, transformer = _transformer)(requests.get)
+get = vlermv.cache(CACHE, transformer = _transformer)(requests.get)
 
 def download(access_token):
     '''
